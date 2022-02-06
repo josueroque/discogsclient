@@ -1,19 +1,15 @@
 import { Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { getReleases } from "../../services/apiService";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getReleasesAction } from "../../store/actions/releases";
 
 const Results = () => {
-  const [releasesList, setReleasesList] = useState([]);
+  const dispatch = useDispatch();
+  const releasesList = useSelector((state) => state.releases.releases);
 
   useEffect(() => {
-    fetchReleases();
-  }, []);
-
-  const fetchReleases = async () => {
-    const list = await getReleases();
-    console.log(list.data.results);
-    setReleasesList(list.data.results);
-  };
+    dispatch(getReleasesAction());
+  }, [dispatch]);
 
   return (
     <div>
