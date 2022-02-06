@@ -27,7 +27,6 @@ export function getReleasesAction(filter) {
       const response = await getReleases(filter);
       dispatch(getReleasesSuccess(response.data.results));
     } catch (error) {
-      console.log(error);
       dispatch(getReleasesFailure(error));
     }
   };

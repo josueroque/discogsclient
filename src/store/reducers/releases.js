@@ -8,7 +8,6 @@ const initialState = {
   releases: [],
   loading: false,
   error: false,
-  cachedResults: [],
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
