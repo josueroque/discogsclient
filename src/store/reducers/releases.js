@@ -8,6 +8,8 @@ const initialState = {
   releases: [],
   loading: false,
   error: false,
+  pages: 0,
+  page: 1,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -25,7 +27,8 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         error: false,
-        releases: action.payload,
+        pages: action?.payload?.pagination?.pages,
+        releases: action.payload.results,
       };
     case GET_RELEASES_FAILURE:
       return {

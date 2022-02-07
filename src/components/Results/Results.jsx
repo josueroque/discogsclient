@@ -12,6 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import AddIcon from "@mui/icons-material/Add";
+import { setParams } from "../../store/actions/params";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -19,24 +20,34 @@ const Demo = styled("div")(({ theme }) => ({
 
 const Results = () => {
   const dispatch = useDispatch();
-  const releasesList = useSelector((state) => state.releases.releases);
-  const [page, setPage] = useState(1);
+  const { releases: releasesList, pages } = useSelector(
+    (state) => state.releases
+  );
+  const { page, artist, album } = useSelector((state) => state.params);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (_, value) => {
     setLoading(true);
-    setPage(value);
+    dispatch(
+      setParams({
+        page: value,
+        per_page: 5,
+        release_title: album,
+        title: artist,
+      })
+    );
   };
 
   useEffect(() => {
     dispatch(
-      getReleasesAction({ page, per_page: 5, release_title: "nevermind" })
+      getReleasesAction({
+        page: page,
+        per_page: 5,
+        release_title: album,
+        title: artist,
+      })
     );
-  }, [dispatch, page]);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [releasesList]);
+  }, [page, artist, album, dispatch]);
 
   return (
     <>
@@ -61,23 +72,32 @@ const Results = () => {
                     </ListItemAvatar>
                     <ListItemText
                       primary={item.title}
-                      secondary={"Secondary text"}
+                      secondary={`${item.style ? item.style : ""}`}
                     />
                   </ListItem>
                 ))
               : null}
           </List>
         </Demo>
+        <div>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{
+              position: "absolute",
+              margin: "0 auto",
+              top: 520,
+            }}
+          >
+            <Pagination
+              count={pages ? pages : 0}
+              page={page}
+              onChange={handleChange}
+            />
+          </Grid>
+        </div>
       </Grid>
-      <div
-        style={{
-          marginTop: releasesList && releasesList.length > 0 ? "0vh" : "40vh",
-        }}
-      >
-        <Grid item xs={12} md={6} style={{ margin: "0 auto" }}>
-          <Pagination count={10} page={page} onChange={handleChange} />
-        </Grid>
-      </div>
     </>
   );
 };
