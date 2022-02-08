@@ -87,7 +87,6 @@ export default function NavBar() {
                   </InputAdornment>
                 ),
               }}
-              disableClearable
               onChange={(event) => {
                 setArtist(event.target.value);
               }}

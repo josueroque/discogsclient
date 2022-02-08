@@ -12,7 +12,12 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import AddIcon from "@mui/icons-material/Add";
+import DetailModal from "../DetailModal";
 import { setParams } from "../../store/actions/params";
+import ReleaseItem from "../ReleaseItem";
+import { SET_RELEASE } from "../../store/types";
+
+import "./Results.css";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -25,6 +30,7 @@ const Results = () => {
   );
   const { page, artist, album } = useSelector((state) => state.params);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (_, value) => {
     setLoading(true);
@@ -58,24 +64,7 @@ const Results = () => {
         <Demo>
           <List dense={false}>
             {releasesList && releasesList.length > 0
-              ? releasesList.map((item) => (
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge='end' aria-label='delete'>
-                        <AddIcon />
-                      </IconButton>
-                    }
-                    key={item.id}
-                  >
-                    <ListItemAvatar>
-                      <Avatar src={item.thumb}></Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={item.title}
-                      secondary={`${item.style ? item.style : ""}`}
-                    />
-                  </ListItem>
-                ))
+              ? releasesList.map((item) => <ReleaseItem item={item} />)
               : null}
           </List>
         </Demo>
@@ -98,6 +87,7 @@ const Results = () => {
           </Grid>
         </div>
       </Grid>
+      <DetailModal showModal={showModal} />
     </>
   );
 };
