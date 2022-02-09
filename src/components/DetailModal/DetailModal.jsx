@@ -1,13 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
+
 import {
   Typography,
   Box,
   Modal,
   Container,
-  FormGroup,
   CardMedia,
-  ListItemText,
   Button,
 } from "@mui/material";
 const style = {
